@@ -38,9 +38,9 @@ class Parser:
 
     def parse_print(self):
         self.eat('PRINT')
-        self.eat('LPARN')
+        self.eat('LPAREN')
         value = self.parse_expr()
-        self.eat('RPARN')
+        self.eat('RPAREN')
         return PrintNode(value)
 
     def parse_expr(self):
