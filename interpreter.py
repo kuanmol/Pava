@@ -27,9 +27,10 @@ class Interpreter:
         return self.variables[node.name]
 
     def visit_PrintNode(self, node):
-        value = self.visit(node.value)
-        print(value)
-        return value
+        # 'node.values' is a list of expressions to evaluate
+        values = [self.visit(expr) for expr in node.values]
+        print(*values)
+        return values
 
     def visit_BinOpNode(self, node):
         left = self.visit(node.left)

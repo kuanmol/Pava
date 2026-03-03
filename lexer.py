@@ -12,11 +12,12 @@ TOKEN_SPEC = [
     ('EQUALS', r'='),
     ('LPAREN', r'\('),
     ('RPAREN', r'\)'),
+    ('COMMA', r','),
     ('COLON', r':'),
-    ('NEWLINE', r'\n'),
-    ('SKIP', r'[ \t]+'),
+    ('SKIP', r'[ \t\n]+'),  # ← add \n here
     ('MISMATCH', r'.'),
 ]
+
 
 class Token:
     def __init__(self, type_, value):
@@ -38,17 +39,22 @@ def lex(code):
             match = pattern.match(code, pos)
             if match:
                 text = match.group(0)
-                if token_type == 'NUMBER':
+                if token_type == 'SKIP':
+                    # just skip, do nothing
+                    pos = match.end(0)
+                    break
+                elif token_type == 'NUMBER':
                     tokens.append(Token('NUMBER', int(text)))
                 elif token_type == 'IDENT':
                     tokens.append(Token("IDENTIFIER", text))
-                elif token_type in ['LET', 'PRINT', 'PLUS', 'MINUS', 'MUL', 'DIV', 'EQUALS', 'LPAREN', 'RPAREN',
-                                    'COLON']:
+                elif token_type in ['LET', 'PRINT', 'PLUS', 'MINUS', 'MUL', 'DIV',
+                                    'EQUALS', 'LPAREN', 'RPAREN', 'COMMA', 'COLON']:
                     tokens.append(Token(token_type, text))
+                # no MISMATCH handling yet – add later if needed
                 pos = match.end(0)
                 break
         if not match:
-            raise SyntaxError(f'Illegal character: {code[pos]} at pos {pos}')
+            raise SyntaxError(f'Illegal character {code[pos]!r} at position {pos}')
     return tokens
 
 

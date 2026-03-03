@@ -4,10 +4,12 @@ from interpreter import Interpreter
 
 code = """
 let x = 10
-let y = 5
+let y =5
+let z = y-x
 print(x)
 print(y)
-print(x + y)
+print(x/y)
+print(x,y,x+y,z)
 """
 
 tokens = lex(code)

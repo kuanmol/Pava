@@ -15,8 +15,9 @@ class VarAccessNode:
 
 
 class PrintNode:
-    def __init__(self, value):
-        self.value = value
+    def __init__(self, values):
+        self.values = values  # store the list of expressions
+
 
 class BinOpNode:
     def __init__(self, left, op, right):

@@ -39,9 +39,28 @@ class Parser:
     def parse_print(self):
         self.eat('PRINT')
         self.eat('LPAREN')
-        value = self.parse_expr()
+
+        values = []
+
+        # Must have at least one argument
+        if self.current_token() is None or self.current_token().type == 'RPAREN':
+            raise Exception("print() requires at least one argument")
+
+        # Parse first expression
+        values.append(self.parse_expr())
+
+        # Then: zero or more   COMMA expression
+        while self.current_token() and self.current_token().type == 'COMMA':
+            self.eat('COMMA')
+            values.append(self.parse_expr())
+
+        # Must end with )
+        if self.current_token() is None or self.current_token().type != 'RPAREN':
+            raise Exception(f"Expected ) but got {self.current_token()}")
+
         self.eat('RPAREN')
-        return PrintNode(value)
+
+        return PrintNode(values)
 
     def parse_expr(self):
         left = None
