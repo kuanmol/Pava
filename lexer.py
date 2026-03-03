@@ -20,11 +20,11 @@ TOKEN_SPEC = [
 
 class Token:
     def __init__(self, type_, value):
-        self.type = type
+        self.type = type_
         self.value = value
 
     def __repr__(self):
-        return f"{self.type} {self.value}"
+        return f"{self.type}({self.value})"
 
 
 def lex(code):
@@ -54,8 +54,8 @@ def lex(code):
 
 if __name__ == '__main__':
     code = """
-    let x=10
-    print(x)
+let x = 10
+print(x)
 """
-    tokens = Token.lex(code)
+    tokens = lex(code)
     print(tokens)
