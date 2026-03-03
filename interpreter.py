@@ -30,3 +30,16 @@ class Interpreter:
         value = self.visit(node.value)
         print(value)
         return value
+
+    def visit_BinOpNode(self, node):
+        left = self.visit(node.left)
+        right = self.visit(node.right)
+
+        if node.op == 'PLUS':
+            return left + right
+        elif node.op == 'MINUS':
+            return left - right
+        elif node.op == 'MUL':
+            return left * right
+        elif node.op == 'DIV':
+            return left / right

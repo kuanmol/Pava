@@ -44,12 +44,24 @@ class Parser:
         return PrintNode(value)
 
     def parse_expr(self):
+        left = None
         token = self.current_token()
-        if token.type == "NUMBER":
+
+        # First term: number or variable
+        if token.type == 'NUMBER':
             self.eat('NUMBER')
-            return NumberNode(token.value)
-        elif token.type == "IDENTIFIER":
+            left = NumberNode(token.value)
+        elif token.type == 'IDENTIFIER':
             self.eat('IDENTIFIER')
-            return VarAccessNode(token.value)
+            left = VarAccessNode(token.value)
         else:
-            raise Exception(f"Unexpected token {token}")
+            raise Exception(f"Unexpected token in expression: {token}")
+
+        # Check for operator
+        while self.current_token() and self.current_token().type in ('PLUS', 'MINUS', 'MUL', 'DIV'):
+            op_token = self.current_token()
+            self.eat(op_token.type)
+            right = self.parse_expr()  # recursive call for right-hand side
+            left = BinOpNode(left, op_token.type, right)
+
+        return left
