@@ -50,6 +50,6 @@ class Parser:
             return NumberNode(token.value)
         elif token.type == "IDENTIFIER":
             self.eat('IDENTIFIER')
-            return VarAssignNode(token.value)
+            return VarAccessNode(token.value)
         else:
             raise Exception(f"Unexpected token {token}")
